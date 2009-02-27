@@ -22,7 +22,7 @@
 
 function _adb() 
 {
-  local cur prev opts c subcommand
+  local cur prev opts c subcommand device_selected
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
@@ -31,11 +31,16 @@ function _adb()
         uninstall bugreport help version wait-for-device start-server \
         kill-server get-state get-serialno status-window remount ppp"
   subcommand=""
+  device_selected=""
 
   # Look for the subcommand.
   c=1
   while [ $c -lt $COMP_CWORD ]; do
     word="${COMP_WORDS[c]}"
+    if [ "$word" = "-d" -o "$word" = "-e" -o "$word" = "-s" ]; then
+      device_selected=true
+      opts="-p"
+    fi
     for cmd in $cmds; do
       if [ "$cmd" = "$word" ]; then
         subcommand="$word"
@@ -48,7 +53,7 @@ function _adb()
     '')
       case "${prev}" in
         -p)
-          _filedir
+          COMPREPLY=( $(compgen -o nospace -f ${cur}) )
           return 0;
           ;;
         -s)
@@ -67,6 +72,14 @@ function _adb()
         *)
           ;;
       esac
+      if [ -z "$device_selected" ]; then
+        local num_devices=$(( $(adb devices 2>/dev/null|wc -l) - 2 ))
+        if [ "$num_devices" -gt "1" ]; then
+          # With multiple devices, you must choose a device first.
+          COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+          return 0
+        fi
+      fi
       COMPREPLY=( $(compgen -W "${cmds}" -- ${cur}) )
       return 0
       ;;
