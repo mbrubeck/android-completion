@@ -108,6 +108,32 @@ function _adb()
       COMPREPLY=( $(compgen -W "-k" -- ${cur}) )
       return 0
       ;;
+    logcat)
+      case "${cur}" in
+        -*)
+          COMPREPLY=( $(compgen -W "-v -b -c -d -f -g -n -r -s" -- ${cur}) )
+          return 0
+          ;;
+        *)
+          ;;
+      esac
+      case "${prev}" in
+        -v)
+          COMPREPLY=( $(compgen -W "brief process tag thread raw time long" -- ${cur}) )
+          return 0
+          ;;
+        -b)
+          COMPREPLY=( $(compgen -W "radio events main" -- ${cur}) )
+          return 0
+          ;;
+        -f)
+          COMPREPLY=( $(compgen -f ${cur}) )
+          return 0
+          ;;
+        *)
+          ;;
+      esac
+      ;;
     *)
       ;;
   esac
