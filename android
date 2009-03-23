@@ -120,3 +120,28 @@ function _adb()
   esac
 }
 complete -o default -F _adb adb
+
+function _emulator() 
+{
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts="-system -datadir -kernel -ramdisk -image -initdata -data -cache \
+    -nocache -sdcard -wipe-data -skindir -skin -noskin -netspeed -netdelay \
+    -netfast -trace -show-kernel -shell -nojni -logcat -noaudio -audio \
+    -audio-in -audio-out -raw-keys -radio -port -onion -onion-alpha \
+    -onion-rotation -scale -dpi-device -http-proxy -timezone -dns-server \
+    -cpu-delay -no-boot-anim -no-window -version -report-console -gps -keyset \
+    -shell-serial -old-system -nand-limits -qemu -verbose -debug -help \
+    -help-disk-images -help-keys -help-debug-tags -help-char-devices \
+    -help-environment -help-keyset-file -help-all"
+
+  case "$cur" in
+    -*)
+      COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+      return 0
+      ;;
+  esac
+}
+complete -o default -F _emulator emulator
