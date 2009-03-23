@@ -53,7 +53,6 @@ function _adb()
     '')
       case "${prev}" in
         -p)
-          COMPREPLY=( $(compgen -o nospace -f ${cur}) )
           return 0;
           ;;
         -s)
@@ -61,15 +60,11 @@ function _adb()
           COMPREPLY=( $(compgen -W "$(adb devices|tail -n +2|head -n -1|cut -f1)" -- ${cur} ) )
           return 0
           ;;
-        *)
-          ;;
       esac
       case "${cur}" in
         -*)
           COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
           return 0
-          ;;
-        *)
           ;;
       esac
       if [ -z "$device_selected" ]; then
@@ -83,21 +78,13 @@ function _adb()
       COMPREPLY=( $(compgen -W "${cmds}" -- ${cur}) )
       return 0
       ;;
-    push|sync)
-      # Filename.
-      COMPREPLY=( $(compgen -f ${cur}) )
-      return 0
-      ;;
     install)
       case "${cur}" in
         -*)
           COMPREPLY=( $(compgen -W "-k -l" -- ${cur}) )
-          ;;
-        *)
-          COMPREPLY=( $(compgen -f -- ${cur}) )
+          return 0
           ;;
       esac
-      return 0
       ;;
     forward)
       # Filename or installation option.
@@ -105,16 +92,18 @@ function _adb()
       return 0
       ;;
     uninstall)
-      COMPREPLY=( $(compgen -W "-k" -- ${cur}) )
-      return 0
+      case "${cur}" in
+        -*)
+          COMPREPLY=( $(compgen -W "-k" -- ${cur}) )
+          return 0
+          ;;
+      esac
       ;;
     logcat)
       case "${cur}" in
         -*)
           COMPREPLY=( $(compgen -W "-v -b -c -d -f -g -n -r -s" -- ${cur}) )
           return 0
-          ;;
-        *)
           ;;
       esac
       case "${prev}" in
@@ -126,17 +115,8 @@ function _adb()
           COMPREPLY=( $(compgen -W "radio events main" -- ${cur}) )
           return 0
           ;;
-        -f)
-          COMPREPLY=( $(compgen -f ${cur}) )
-          return 0
-          ;;
-        *)
-          ;;
       esac
-      ;;
-    *)
       ;;
   esac
 }
-
-complete -F _adb adb
+complete -o default -F _adb adb
