@@ -106,7 +106,7 @@ function _adb()
   opts="-d -e -s -p"
   cmds="devices push pull sync shell emu logcat forward jdwp install \
         uninstall bugreport help version wait-for-device start-server \
-        kill-server get-state get-serialno status-window remount ppp"
+        kill-server get-state get-serialno status-window remount root ppp"
   subcommand=""
   device_selected=""
 
