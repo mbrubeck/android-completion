@@ -20,9 +20,86 @@
 ## OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ## THE SOFTWARE.
 
+function _android() 
+{
+  local cur prev opts cmds type types c subcommand
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts="--help --silent --verbose"
+  cmds="list create move delete update"
+  types="avd target project"
+  subcommand=""
+  type=""
+
+  # Look for the subcommand.
+  c=1
+  while [ $c -lt $COMP_CWORD ]; do
+    word="${COMP_WORDS[c]}"
+    for cmd in $cmds; do
+      if [ "$cmd" = "$word" ]; then
+        subcommand="$word"
+      fi
+    done
+    for w in $types; do
+      if [ "$w" = "$word" ]; then
+        type="$word"
+      fi
+    done
+    c=$((++c))
+  done
+
+  case "$subcommand $type" in
+    " ")
+      case "$cur" in
+        -*)
+          COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+          ;;
+      esac
+      COMPREPLY=( $(compgen -W "$cmds" -- ${cur}) )
+      ;;
+    "list ")
+      COMPREPLY=( $(compgen -W "avd target" -- ${cur}) )
+      ;;
+    "create "|"update ")
+      COMPREPLY=( $(compgen -W "avd project" -- ${cur}) )
+      ;;
+    "move "|"delete ")
+      COMPREPLY=( $(compgen -W "avd" -- ${cur}) )
+      ;;
+  esac
+
+  case "$cur" in
+    -*)
+      case "$subcommand $type" in
+        "delete ")
+          COMPREPLY=( $(compgen -W "avd" -- ${cur}) )
+          ;;
+        "create avd")
+          COMPREPLY=( $(compgen -W "--target --sdcard --path --name --force --skin" -- ${cur}) )
+          ;;
+        "move avd")
+          COMPREPLY=( $(compgen -W "--path --name --rename" -- ${cur}) )
+          ;;
+        "delete avd"|"update avd")
+          COMPREPLY=( $(compgen -W "--name" -- ${cur}) )
+          ;;
+        "create project")
+          COMPREPLY=( $(compgen -W "--package --name --activity --target --path" -- ${cur}) )
+          ;;
+        "update project")
+          COMPREPLY=( $(compgen -W "--target --path --name" -- ${cur}) )
+          ;;
+      esac
+      ;;
+  esac
+  return 0
+}
+complete -o default -F _android android
+
 function _adb() 
 {
-  local cur prev opts c subcommand device_selected
+  local cur prev opts cmds c subcommand device_selected
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
