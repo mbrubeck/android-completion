@@ -108,6 +108,7 @@ function _adb()
         uninstall bugreport help version wait-for-device start-server \
         reboot reboot-bootloader \
         kill-server get-state get-serialno status-window remount root ppp"
+  cmds_not_need_device="devices help version start-server kill-server"
   subcommand=""
   device_selected=""
 
@@ -149,7 +150,7 @@ function _adb()
         local num_devices=$(( $(adb devices 2>/dev/null|wc -l) - 2 ))
         if [ "$num_devices" -gt "1" ]; then
           # With multiple devices, you must choose a device first.
-          COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+          COMPREPLY=( $(compgen -W "${opts} ${cmds_not_need_device}" -- ${cur}) )
           return 0
         fi
       fi
@@ -159,7 +160,7 @@ function _adb()
     install)
       case "${cur}" in
         -*)
-          COMPREPLY=( $(compgen -W "-k -l" -- ${cur}) )
+          COMPREPLY=( $(compgen -W "-l -r -s" -- ${cur}) )
           return 0
           ;;
       esac
