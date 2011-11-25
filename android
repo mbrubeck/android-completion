@@ -135,7 +135,7 @@ function _adb()
           ;;
         -s)
           # Use 'adb devices' to list serial numbers.
-          COMPREPLY=( $(compgen -W "$(adb devices|tail -n +2|head -n -1|cut -f1)" -- ${cur} ) )
+          COMPREPLY=( $(compgen -W "$(adb devices|grep 'device$'|cut -f1)" -- ${cur} ) )
           return 0
           ;;
       esac
