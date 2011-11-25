@@ -28,7 +28,7 @@ function _android()
   prev="${COMP_WORDS[COMP_CWORD-1]}"
   opts="--help --silent --verbose"
   cmds="list create move delete update"
-  types="avd target project"
+  types="avd target project lib-project test-project sdk"
   subcommand=""
   type=""
 
@@ -59,10 +59,10 @@ function _android()
       COMPREPLY=( $(compgen -W "$cmds" -- ${cur}) )
       ;;
     "list ")
-      COMPREPLY=( $(compgen -W "avd target" -- ${cur}) )
+      COMPREPLY=( $(compgen -W "avd target sdk" -- ${cur}) )
       ;;
     "create "|"update ")
-      COMPREPLY=( $(compgen -W "avd project" -- ${cur}) )
+      COMPREPLY=( $(compgen -W "avd project test-project lib-project" -- ${cur}) )
       ;;
     "move "|"delete ")
       COMPREPLY=( $(compgen -W "avd" -- ${cur}) )
@@ -76,7 +76,7 @@ function _android()
           COMPREPLY=( $(compgen -W "avd" -- ${cur}) )
           ;;
         "create avd")
-          COMPREPLY=( $(compgen -W "--target --sdcard --path --name --force --skin" -- ${cur}) )
+          COMPREPLY=( $(compgen -W "--target --sdcard --path --name --force --skin --snapshot --abi" -- ${cur}) )
           ;;
         "move avd")
           COMPREPLY=( $(compgen -W "--path --name --rename" -- ${cur}) )
@@ -87,8 +87,20 @@ function _android()
         "create project")
           COMPREPLY=( $(compgen -W "--package --name --activity --target --path" -- ${cur}) )
           ;;
+        "create lib-project")
+          COMPREPLY=( $(compgen -W "--package --name --target --path" -- ${cur}) )
+          ;;
+        "create test-project")
+          COMPREPLY=( $(compgen -W "--main --name --path" -- ${cur}) )
+          ;;
         "update project")
-          COMPREPLY=( $(compgen -W "--target --path --name" -- ${cur}) )
+          COMPREPLY=( $(compgen -W "--target --path --name --library --subprojects" -- ${cur}) )
+          ;;
+        "update lib-project")
+          COMPREPLY=( $(compgen -W "--target --path" -- ${cur}) )
+          ;;
+        "update test-project")
+          COMPREPLY=( $(compgen -W "--main --path" -- ${cur}) )
           ;;
       esac
       ;;
