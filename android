@@ -116,7 +116,7 @@ function _adb()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
   opts="-d -e -s -p"
-  cmds="devices push pull sync shell emu logcat forward jdwp install \
+  cmds="devices push pull sync shell emu logcat forward jdwp install sideload \
         uninstall bugreport help version wait-for-device start-server \
         reboot reboot-bootloader \
         kill-server get-state get-serialno status-window remount root ppp"
