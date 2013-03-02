@@ -119,8 +119,9 @@ function _adb()
   cmds="devices push pull sync shell emu logcat forward jdwp install sideload \
         uninstall bugreport help version wait-for-device start-server \
         reboot reboot-bootloader \
+        connect disconnect \
         kill-server get-state get-serialno status-window remount root ppp"
-  cmds_not_need_device="devices help version start-server kill-server"
+  cmds_not_need_device="devices help version start-server kill-server connect disconnect"
   subcommand=""
   device_selected=""
 
