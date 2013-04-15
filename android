@@ -221,7 +221,7 @@ function _fastboot()
   prev="${COMP_WORDS[COMP_CWORD-1]}"
   opts="-w -s -p -c -i -b -n"
   cmds="update flashall flash erase getvar boot devices \
-        reboot reboot-bootloader oem"
+        reboot reboot-bootloader oem continue"
   subcommand=""
   partition_list="boot recovery system userdata"
   device_selected=""
