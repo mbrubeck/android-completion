@@ -120,8 +120,9 @@ function _adb()
         uninstall bugreport help version wait-for-device start-server \
         reboot reboot-bootloader \
         connect disconnect \
-        kill-server get-state get-serialno status-window remount root ppp"
-  cmds_not_need_device="devices help version start-server kill-server connect disconnect"
+        kill-server get-state get-serialno status-window remount root ppp \
+        wait-for-device"
+  cmds_not_need_device="devices help version start-server kill-server connect disconnect wait-for-device"
   subcommand=""
   device_selected=""
 
