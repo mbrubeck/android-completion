@@ -298,6 +298,13 @@ function _emulator()
     -help-environment -help-keyset-file -help-virtual-device -help-sdk-images \
     -help-build-images -help-all"
 
+  case "$prev" in
+    -avd)
+      COMPREPLY=( $(compgen -W "$( android list avd -c )" -- ${cur}) )
+      return 0
+      ;;
+  esac
+
   case "$cur" in
     -*)
       COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
