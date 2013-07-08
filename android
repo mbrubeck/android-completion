@@ -300,7 +300,7 @@ function _emulator()
 
   case "$prev" in
     -avd)
-      COMPREPLY=( $(compgen -W "$( android list avd -c )" -- ${cur}) )
+      COMPREPLY=( $(compgen -W "$(find ~/.android/avd -maxdepth 1 -name '*.ini' -exec basename {} .ini \;)" -- ${cur}) )
       return 0
       ;;
   esac
