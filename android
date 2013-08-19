@@ -223,7 +223,7 @@ function _fastboot()
   cmds="update flashall flash erase getvar boot devices \
         reboot reboot-bootloader oem continue"
   subcommand=""
-  partition_list="boot recovery system userdata"
+  partition_list="boot recovery system userdata bootloader radio"
   device_selected=""
 
   # Look for the subcommand.
