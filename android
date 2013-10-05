@@ -120,7 +120,7 @@ function _adb()
         uninstall bugreport help version wait-for-device start-server \
         reboot reboot-bootloader \
         connect disconnect \
-        kill-server get-state get-serialno status-window remount root ppp"
+        kill-server get-state get-serialno status-window remount root ppp backup"
   cmds_not_need_device="devices help version start-server kill-server connect disconnect"
   subcommand=""
   device_selected=""
@@ -205,6 +205,14 @@ function _adb()
           ;;
         -b)
           COMPREPLY=( $(compgen -W "radio events main" -- ${cur}) )
+          return 0
+          ;;
+      esac
+      ;;
+    backup)
+      case "${cur}" in
+        -*)
+          COMPREPLY=( $(compgen -W "-f -apk -noapk -obb -noobb -shared -noshared -all -system -nosystem" -- ${cur}) )
           return 0
           ;;
       esac
