@@ -298,6 +298,13 @@ function _emulator()
     -help-environment -help-keyset-file -help-virtual-device -help-sdk-images \
     -help-build-images -help-all"
 
+  case "$prev" in
+    -avd)
+      COMPREPLY=( $(compgen -W "$(find ~/.android/avd -maxdepth 1 -name '*.ini' -exec basename {} .ini \;)" -- ${cur}) )
+      return 0
+      ;;
+  esac
+
   case "$cur" in
     -*)
       COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
