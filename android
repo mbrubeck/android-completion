@@ -313,6 +313,14 @@ function _emulator()
       ;;
   esac
 
+
+  case "$cur" in
+    @*)
+      COMPREPLY=( $(compgen -P @ -W "$(find ~/.android/avd -maxdepth 1 -name '*.ini' -exec basename {} .ini \;)" -- ${cur:1} ) )
+      return 0
+      ;;
+  esac
+
   case "$cur" in
     -*)
       COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
