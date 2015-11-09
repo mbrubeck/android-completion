@@ -218,6 +218,14 @@ function _adb()
           ;;
       esac
       ;;
+    connect)
+      COMPREPLY=( $(echo `cat ~/.bash_history | egrep '^adb connect' | sort | uniq | sed 's/^adb connect//'`) )
+      return 0
+      ;;
+    disconnect)
+      COMPREPLY=( $(echo `cat ~/.bash_history | egrep '^adb disconnect' | sort | uniq | sed 's/^adb disconnect//'`) )
+      return 0
+      ;;
   esac
 }
 complete -o default -F _adb adb
