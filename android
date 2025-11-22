@@ -109,6 +109,55 @@ function _android()
 }
 complete -o default -F _android android
 
+function _sdkmanager_fill_cmd_based_on_prev()
+{
+  prev="$1"
+  cur="$2"
+  if [[ $prev == "--list" ]]; then
+    COMPREPLY+=($(compgen -W "--newer --include_obsolete" -- "$cur"))
+  fi
+  if [[ $prev == "--update" ]]; then
+    COMPREPLY+=($(compgen -W "--include_obsolete" -- "$cur"))
+  fi
+  if [[ $prev == "--uninstall" ]]; then
+    COMPREPLY+=($(compgen -W "--package_file=" -- "$cur"))
+  fi
+}
+function _sdkmanager()
+{
+  local cur prev cmds subcommand param
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  if [[ $cur == "=" ]]; then
+    cur=""
+  fi
+  if [[ $prev == "=" ]]; then
+    prev="${COMP_WORDS[COMP_CWORD-2]}"
+  fi
+
+  cmds=(help install uninstall update list list_installed licenses version sdk_root= channel= include_obsolete no_https proxy= proxy_host= proxy_port= verbose)
+  if [[ $cur == --* ]]; then
+    COMPREPLY=( $(compgen -W "$(echo ${cmds[@]/#/--})" -- "$cur") )
+    _sdkmanager_fill_cmd_based_on_prev "$prev" "$cur"
+  else
+    case "$prev" in
+      "--channel")
+        COMPREPLY=( $(compgen -W "0 1 2 3 4" -- "$cur") )
+        ;;
+      "--proxy")
+        COMPREPLY=( $(compgen -W "https socks" -- "$cur") )
+        ;;
+      *)
+        COMPREPLY=( $(compgen -W "$(echo ${cmds[@]/#/--})" -- "$cur") )
+        _sdkmanager_fill_cmd_based_on_prev "$prev" "$cur"
+        ;;
+    esac
+  fi
+  return 0
+}
+complete -o default -F _sdkmanager sdkmanager
+
 function _adb()
 {
   local cur prev opts cmds c subcommand device_selected
